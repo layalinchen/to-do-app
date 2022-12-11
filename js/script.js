@@ -2,10 +2,12 @@
 
 let todoItems = [];
 
+/** Here are the to-do-list functions */
+
 function renderTodo(todo) {
-  localStorage.setItem("todoItemsRef", JSON.stringify(todoItems));
+  localStorage.setItem('todoItemsRef', JSON.stringify(todoItems));
   // Select the first element with a class of `js-todo-list`
-  const list = document.querySelector(".js-todo-list");
+  const list = document.querySelector('.js-todo-list');
   // selct the current todo item in the DOM
   const item = document.querySelector(`[data-key='${todo.id}']`);
 
@@ -14,19 +16,19 @@ function renderTodo(todo) {
     // remove the item from the DOM
     item.remove();
     // when todo itesm is empty//
-    if (todoItems.length === 0) list.innerHTML = "";
+    if (todoItems.length === 0) list.innerHTML = '';
     return;
   }
 
   // Use the ternary operator to check if `todo.checked` is true
   // if so, assign 'done' to `isChecked`. Otherwise, assign an empty string
-  const isChecked = todo.checked ? "done" : "";
+  const isChecked = todo.checked ? 'done' : '';
   // Create an `li` element and assign it to `node`
-  const node = document.createElement("li");
+  const node = document.createElement('li');
   // Set the class attribute
-  node.setAttribute("class", `todo-item ${isChecked}`);
+  node.setAttribute('class', `todo-item ${isChecked}`);
   // Set the data-key attribute to the id of the todo
-  node.setAttribute("data-key", todo.id);
+  node.setAttribute('data-key', todo.id);
   // Set the contents of the `li` element created above
   node.innerHTML = `
       <input id="${todo.id}" type="checkbox"/>
@@ -49,6 +51,14 @@ function renderTodo(todo) {
   // the element referenced by the `list` variable
 }
 
+// function to add todos to local storage
+function addToLocalStorage(todo) {
+  // conver the array to string then store it.
+  localStorage.setItem('todo', JSON.stringify(todo));
+  // render them to screen
+  renderTodo(todo);
+}
+
 function addTodo(text) {
   const todo = {
     text,
@@ -57,7 +67,7 @@ function addTodo(text) {
   };
 
   todoItems.push(todo);
-  //renderTodo(todo);
+  // renderTodo(todo);
   addToLocalStorage(todo);
 }
 
@@ -87,51 +97,44 @@ function deleteTodo(key) {
   renderTodo(todo);
 }
 
-// function to add todos to local storage
-function addToLocalStorage(todo) {
-  // conver the array to string then store it.
-  localStorage.setItem('todo', JSON.stringify(todo));
-  // render them to screen
-  renderTodo(todo);
-}
-
-//select Form element//
-const form = document.querySelector(".js-form");
+// select Form element//
+const form = document.querySelector('.js-form');
 // add sbmit event  listener
-form.addEventListener("submit", (event) => {
+form.addEventListener('submit', (event) => {
   // prevent oage refrresh on submission
   event.preventDefault();
   // select the text input
-  const input = document.querySelector(".js-todo-input");
+  const input = document.querySelector('.js-todo-input');
 
   // Get the value of the input an remove whitespacees
   const text = input.value.trim();
-  if (text !== "") {
+  if (text !== '') {
     addTodo(text);
-    input.value = "";
+    input.value = '';
     input.focus();
   }
 });
 
-// rrichtig
+/** Here are the registered events */
+
 // Select the entire list
-const list = document.querySelector(".js-todo-list");
+const list = document.querySelector('.js-todo-list');
 // Add a click event listener to the list and its children
-list.addEventListener("click", (event) => {
-  if (event.target.classList.contains("js-tick")) {
+list.addEventListener('click', (event) => {
+  if (event.target.classList.contains('js-tick')) {
     const itemKey = event.target.parentElement.dataset.key;
     toggleDone(itemKey);
   }
 
-  // add this if böock
-  if (event.target.classList.contains("js-delete-todo")) {
+  // add this if block
+  if (event.target.classList.contains('js-delete-todo')) {
     const itemKey = event.target.parentElement.dataset.key;
     deleteTodo(itemKey);
   }
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-  const ref = localStorage.getItem("todoItemsRef");
+document.addEventListener('DOMContentLoaded', () => {
+  const ref = localStorage.getItem('todoItemsRef');
   if (ref) {
     todoItems = JSON.parse(ref);
     todoItems.forEach((t) => {
